@@ -8,13 +8,20 @@ The Smart Parking System reduces the time spent searching for parking spaces by 
 
 ## Team Members & Roles
 
+### Karthik Pagadala – Project Lead & Full-Stack Developer
+
+* Led project planning and system architecture.
+* Developed core frontend and backend modules.
+* Implemented authentication and authorization.
+* Managed integration and deployment.
+
 ### Tharun Vasu Sai – Frontend Developer & UI/UX Designer
 
 * Designed user interfaces and user experience flows.
 * Developed React-based frontend components.
 * Implemented responsive layouts and navigation.
 
-### Karthik Pagadala – Backend Developer & Database Engineer
+### Harshith – Backend Developer & Database Engineer
 
 * Developed REST APIs using Node.js and Express.js.
 * Designed MongoDB database schemas.
