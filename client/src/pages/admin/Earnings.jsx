@@ -1,119 +1,298 @@
-import React, { useState, useEffect } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
-import { DollarSign, Download, Calendar as CalendarIcon, TrendingUp } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+import {
+  DollarSign,
+  Download,
+  Calendar,
+  TrendingUp,
+  Wallet,
+} from "lucide-react";
+
+import { motion } from "framer-motion";
 
 const Earnings = () => {
-  const [timeRange, setTimeRange] = useState('monthly');
+  const [timeRange, setTimeRange] = useState("monthly");
   const [loading, setLoading] = useState(true);
 
-  // Dummy earnings data for the UI
   const earningsData = [
-    { name: 'Jan', total: 45000, offline: 10000, online: 35000 },
-    { name: 'Feb', total: 52000, offline: 12000, online: 40000 },
-    { name: 'Mar', total: 48000, offline: 9000, online: 39000 },
-    { name: 'Apr', total: 61000, offline: 15000, online: 46000 },
-    { name: 'May', total: 59000, offline: 11000, online: 48000 },
-    { name: 'Jun', total: 75000, offline: 14000, online: 61000 },
+    { name: "Jan", total: 45000 },
+    { name: "Feb", total: 52000 },
+    { name: "Mar", total: 48000 },
+    { name: "Apr", total: 61000 },
+    { name: "May", total: 59000 },
+    { name: "Jun", total: 75000 },
   ];
 
   useEffect(() => {
-    // Simulate fetch
     const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, [timeRange]);
 
+  const cards = [
+    {
+      title: "Total Earnings",
+      value: "₹3,40,000",
+      icon: TrendingUp,
+      color: "from-cyan-500 to-blue-600",
+      sub: "+24% Growth",
+    },
+    {
+      title: "This Month",
+      value: "₹75,000",
+      icon: DollarSign,
+      color: "from-purple-500 to-pink-500",
+      sub: "Highest Revenue",
+    },
+    {
+      title: "Pending Payout",
+      value: "₹12,400",
+      icon: Wallet,
+      color: "from-amber-400 to-orange-500",
+      sub: "Next Settlement",
+    },
+  ];
+
   return (
-    <div className="h-full flex flex-col space-y-6">
-      <header className="flex justify-between items-end">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-black p-8 rounded-3xl">
+
+      {/* Header */}
+
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+
         <div>
-          <h1 className="text-2xl font-bold text-white">Earnings & Revenue</h1>
-          <p className="text-gray-400">Detailed breakdown of your financial performance</p>
-        </div>
-        <button className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-gray-700 flex items-center">
-          <Download className="w-4 h-4 mr-2" /> Export Report
-        </button>
-      </header>
 
-      {/* Top Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-br from-blue-600 to-blue-800 p-6 rounded-2xl shadow-lg border border-blue-500/30">
-          <p className="text-blue-100 text-sm font-medium mb-1">Total Lifetime Earnings</p>
-          <h3 className="text-4xl font-bold text-white">₹3,40,000</h3>
-          <p className="text-blue-200 text-sm mt-4 font-medium flex items-center">
-            <TrendingUp className="w-4 h-4 mr-1" /> +24% Year over Year
+          <h1 className="text-4xl font-bold text-white">
+            Earnings Dashboard
+          </h1>
+
+          <p className="text-slate-400 mt-2">
+            Track your revenue and financial analytics.
           </p>
-        </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gray-900 p-6 rounded-2xl border border-gray-800 shadow-sm">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-gray-400 text-sm font-medium">This Month</p>
-              <h3 className="text-3xl font-bold text-white mt-1">₹75,000</h3>
-            </div>
-            <div className="p-3 bg-green-500/20 rounded-xl">
-              <DollarSign className="w-6 h-6 text-green-500" />
-            </div>
-          </div>
-        </motion.div>
+        </div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-gray-900 p-6 rounded-2xl border border-gray-800 shadow-sm">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-gray-400 text-sm font-medium">Pending Payout</p>
-              <h3 className="text-3xl font-bold text-white mt-1">₹12,400</h3>
-            </div>
-            <div className="p-3 bg-yellow-500/20 rounded-xl">
-              <CalendarIcon className="w-6 h-6 text-yellow-500" />
-            </div>
-          </div>
-          <p className="text-gray-500 text-sm mt-4">Expected settling on 1st of next month</p>
-        </motion.div>
+        <button className="mt-5 md:mt-0 flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:scale-105 duration-300 shadow-lg shadow-cyan-500/20 text-white font-semibold">
+
+          <Download size={18} />
+
+          Export Report
+
+        </button>
+
+      </div>
+
+      {/* Cards */}
+
+      <div className="grid lg:grid-cols-3 gap-6">
+
+        {cards.map((card, index) => {
+
+          const Icon = card.icon;
+
+          return (
+
+            <motion.div
+
+              key={index}
+
+              initial={{ opacity: 0, y: 25 }}
+
+              animate={{ opacity: 1, y: 0 }}
+
+              transition={{ delay: index * 0.15 }}
+
+              whileHover={{ y: -8 }}
+
+              className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+
+            >
+
+              <div
+                className={`h-2 bg-gradient-to-r ${card.color}`}
+              ></div>
+
+              <div className="p-7">
+
+                <div className="flex justify-between">
+
+                  <div>
+
+                    <p className="text-slate-400">{card.title}</p>
+
+                    <h2 className="text-4xl font-bold text-white mt-2">
+                      {card.value}
+                    </h2>
+
+                    <p className="text-emerald-400 mt-4">{card.sub}</p>
+
+                  </div>
+
+                  <div
+                    className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${card.color} flex items-center justify-center`}
+                  >
+
+                    <Icon className="text-white" size={30} />
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </motion.div>
+
+          );
+
+        })}
+
       </div>
 
       {/* Chart */}
-      <div className="bg-gray-900 p-6 rounded-2xl border border-gray-800 shadow-sm flex-1 flex flex-col min-h-[400px]">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-bold text-white">Revenue Analysis</h3>
-          <div className="flex bg-gray-800 p-1 rounded-lg">
-            {['weekly', 'monthly', 'yearly'].map(range => (
-              <button
-                key={range}
-                onClick={() => setTimeRange(range)}
-                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors capitalize ${
-                  timeRange === range ? 'bg-blue-600 text-white shadow-sm' : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                {range}
-              </button>
-            ))}
+
+      <motion.div
+
+        initial={{ opacity: 0 }}
+
+        animate={{ opacity: 1 }}
+
+        transition={{ delay: .4 }}
+
+        className="mt-8 backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 shadow-2xl p-8"
+
+      >
+
+        <div className="flex justify-between items-center mb-8">
+
+          <div>
+
+            <h2 className="text-2xl font-bold text-white">
+
+              Revenue Analytics
+
+            </h2>
+
+            <p className="text-slate-400">
+
+              Monthly Revenue Performance
+
+            </p>
+
           </div>
+
+          <div className="flex bg-slate-900 rounded-xl p-1">
+
+            {["weekly", "monthly", "yearly"].map((range) => (
+
+              <button
+
+                key={range}
+
+                onClick={() => setTimeRange(range)}
+
+                className={`px-5 py-2 rounded-lg transition-all capitalize font-medium ${
+                  timeRange === range
+                    ? "bg-gradient-to-r from-cyan-500 to-indigo-600 text-white"
+                    : "text-slate-400 hover:text-white"
+                }`}
+
+              >
+
+                {range}
+
+              </button>
+
+            ))}
+
+          </div>
+
         </div>
 
         {loading ? (
-          <div className="flex-1 flex items-center justify-center">
-            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+
+          <div className="h-[420px] flex items-center justify-center">
+
+            <div className="w-14 h-14 rounded-full border-4 border-cyan-500 border-t-transparent animate-spin"></div>
+
           </div>
+
         ) : (
-          <div className="flex-1 w-full relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={earningsData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+
+          <div className="h-[420px]">
+
+            <ResponsiveContainer>
+
+              <AreaChart data={earningsData}>
+
                 <defs>
-                  <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+
+                  <linearGradient id="color1" x1="0" y1="0" x2="0" y2="1">
+
+                    <stop
+                      offset="0%"
+                      stopColor="#06b6d4"
+                      stopOpacity={0.8}
+                    />
+
+                    <stop
+                      offset="100%"
+                      stopColor="#06b6d4"
+                      stopOpacity={0}
+                    />
+
                   </linearGradient>
+
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1F2937" vertical={false} />
-                <XAxis dataKey="name" stroke="#9CA3AF" tick={{fill: '#9CA3AF'}} axisLine={false} tickLine={false} />
-                <YAxis stroke="#9CA3AF" tick={{fill: '#9CA3AF'}} axisLine={false} tickLine={false} tickFormatter={(val) => `₹${val/1000}k`} />
-                <RechartsTooltip contentStyle={{backgroundColor: '#111827', borderColor: '#374151', color: '#fff'}} />
-                <Area type="monotone" dataKey="total" stroke="#3B82F6" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" />
+
+                <CartesianGrid
+                  stroke="#334155"
+                  strokeDasharray="3 3"
+                />
+
+                <XAxis
+                  dataKey="name"
+                  stroke="#94a3b8"
+                />
+
+                <YAxis
+                  stroke="#94a3b8"
+                />
+
+                <Tooltip
+                  contentStyle={{
+                    background: "#0f172a",
+                    borderRadius: "15px",
+                    border: "1px solid #334155",
+                    color: "#fff",
+                  }}
+                />
+
+                <Area
+                  type="monotone"
+                  dataKey="total"
+                  stroke="#06b6d4"
+                  strokeWidth={4}
+                  fill="url(#color1)"
+                />
+
               </AreaChart>
+
             </ResponsiveContainer>
+
           </div>
+
         )}
-      </div>
+
+      </motion.div>
+
     </div>
   );
 };
