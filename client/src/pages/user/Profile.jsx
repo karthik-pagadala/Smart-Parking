@@ -1,102 +1,270 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { User, Mail, Phone, ShieldCheck, KeyRound } from 'lucide-react';
-import { motion } from 'framer-motion';
-// import api from '../../services/api';
+import React from "react";
+import { useAuth } from "../../context/AuthContext";
+import {
+  User,
+  Mail,
+  Phone,
+  ShieldCheck,
+  KeyRound,
+  Calendar,
+  BadgeCheck,
+  Activity,
+} from "lucide-react";
+import { motion } from "framer-motion";
 
 const Profile = () => {
   const { user } = useAuth();
-  
-  // To handle editing, you would add state here and API put requests
-  // For this implementation, we will keep it read-only to match the typical dashboard spec
-  
+
   if (!user) return null;
 
-  return (
-    <div className="max-w-3xl mx-auto h-full pb-10">
-      <header className="mb-8">
-        <h1 className="text-2xl font-bold text-white">My Profile</h1>
-        <p className="text-gray-400">Manage your account information and preferences</p>
-      </header>
+  const isAdmin =
+    user.role === "admin" || user.role === "superadmin";
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Profile Card */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="md:col-span-1 bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col items-center text-center shadow-lg"
-        >
-          <div className="w-32 h-32 bg-blue-500/20 rounded-full flex items-center justify-center border-4 border-gray-800 mb-4 shadow-inner relative">
-            <span className="text-5xl font-bold text-blue-500">{user.name.charAt(0)}</span>
-            {user.role === 'admin' || user.role === 'superadmin' ? (
-              <div className="absolute bottom-0 right-0 bg-red-500 p-2 rounded-full border-4 border-gray-900">
-                <ShieldCheck className="w-4 h-4 text-white" />
-              </div>
-            ) : null}
-          </div>
-          <h2 className="text-xl font-bold text-white mb-1">{user.name}</h2>
-          <p className="text-blue-500 font-medium text-sm capitalize bg-blue-500/10 px-3 py-1 rounded-full">{user.role}</p>
-          
-          <div className="w-full mt-6 pt-6 border-t border-gray-800">
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-gray-400 text-sm">Status</span>
-              <span className="bg-green-500/20 text-green-500 text-xs font-bold px-2 py-1 rounded-md capitalize">
-                {user.status || 'Active'}
+  return (
+    <div className="min-h-full max-w-6xl mx-auto px-4 pb-10">
+
+      {/* Heading */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <h1 className="text-3xl font-bold text-white">
+          My Profile
+        </h1>
+        <p className="text-gray-400 mt-1">
+          View your account details and security information
+        </p>
+      </motion.div>
+
+      {/* Profile Banner */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 p-8 shadow-2xl"
+      >
+        <div className="absolute right-0 top-0 w-72 h-72 rounded-full bg-white/10 blur-3xl"></div>
+        <div className="absolute left-0 bottom-0 w-60 h-60 rounded-full bg-cyan-400/10 blur-3xl"></div>
+
+        <div className="relative flex flex-col md:flex-row md:items-center gap-6">
+
+          {/* Avatar */}
+          <div className="relative">
+            <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-md border-4 border-white/30 flex items-center justify-center">
+              <span className="text-5xl font-bold text-white">
+                {user.name.charAt(0).toUpperCase()}
               </span>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-400 text-sm">Member Since</span>
-              <span className="text-white font-medium text-sm">2026</span>
+
+            {isAdmin && (
+              <div className="absolute bottom-2 right-2 bg-red-500 p-2 rounded-full border-4 border-white">
+                <ShieldCheck className="w-5 h-5 text-white" />
+              </div>
+            )}
+          </div>
+
+          {/* User Info */}
+          <div className="text-white flex-1">
+            <h2 className="text-3xl font-bold">
+              {user.name}
+            </h2>
+
+            <p className="mt-2 text-blue-100">
+              {user.email}
+            </p>
+
+            <div className="flex flex-wrap gap-3 mt-5">
+
+              <span className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-sm capitalize">
+                {user.role}
+              </span>
+
+              <span className="px-4 py-2 rounded-full bg-green-500/30 text-sm">
+                {user.status || "Active"}
+              </span>
+
             </div>
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
 
-        {/* Details Card */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="md:col-span-2 bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-lg"
-        >
-          <h3 className="text-lg font-bold text-white mb-6 flex items-center">
-            <User className="w-5 h-5 mr-2 text-blue-500" /> Personal Information
+      {/* Stats */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: .2 }}
+        className="grid md:grid-cols-3 gap-6 mt-8"
+      >
+
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-blue-500 transition">
+          <Activity className="w-10 h-10 text-blue-400 mb-4" />
+
+          <h3 className="text-gray-400 text-sm">
+            Account Status
           </h3>
-          
+
+          <p className="text-2xl font-bold text-white mt-2">
+            {user.status || "Active"}
+          </p>
+        </div>
+
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-green-500 transition">
+          <BadgeCheck className="w-10 h-10 text-green-400 mb-4" />
+
+          <h3 className="text-gray-400 text-sm">
+            User Role
+          </h3>
+
+          <p className="text-2xl font-bold text-white capitalize mt-2">
+            {user.role}
+          </p>
+        </div>
+
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-purple-500 transition">
+          <Calendar className="w-10 h-10 text-purple-400 mb-4" />
+
+          <h3 className="text-gray-400 text-sm">
+            Member Since
+          </h3>
+
+          <p className="text-2xl font-bold text-white mt-2">
+            2026
+          </p>
+        </div>
+
+      </motion.div>
+
+      {/* Details */}
+      <div className="grid lg:grid-cols-2 gap-8 mt-8">
+
+        {/* Personal Info */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="bg-gray-900 border border-gray-800 rounded-3xl p-8"
+        >
+          <h2 className="text-white text-xl font-semibold mb-8">
+            Personal Information
+          </h2>
+
           <div className="space-y-6">
-            <div>
-              <label className="block text-gray-500 text-xs uppercase tracking-wider mb-2">Full Name</label>
-              <div className="bg-gray-800/50 border border-gray-800 rounded-xl px-4 py-3 flex items-center">
-                <User className="w-5 h-5 text-gray-500 mr-3" />
-                <span className="text-white font-medium">{user.name}</span>
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-gray-500 text-xs uppercase tracking-wider mb-2">Email Address</label>
-              <div className="bg-gray-800/50 border border-gray-800 rounded-xl px-4 py-3 flex items-center">
-                <Mail className="w-5 h-5 text-gray-500 mr-3" />
-                <span className="text-white font-medium">{user.email}</span>
+
+            <div className="flex items-center bg-gray-800 rounded-xl p-4">
+              <User className="text-blue-400 mr-4" />
+
+              <div>
+                <p className="text-gray-400 text-sm">
+                  Full Name
+                </p>
+
+                <p className="text-white font-medium">
+                  {user.name}
+                </p>
               </div>
             </div>
 
-            <div>
-              <label className="block text-gray-500 text-xs uppercase tracking-wider mb-2">Phone Number</label>
-              <div className="bg-gray-800/50 border border-gray-800 rounded-xl px-4 py-3 flex items-center">
-                <Phone className="w-5 h-5 text-gray-500 mr-3" />
-                <span className="text-white font-medium">{user.phone || 'Not provided'}</span>
+            <div className="flex items-center bg-gray-800 rounded-xl p-4">
+              <Mail className="text-green-400 mr-4" />
+
+              <div>
+                <p className="text-gray-400 text-sm">
+                  Email Address
+                </p>
+
+                <p className="text-white font-medium">
+                  {user.email}
+                </p>
               </div>
             </div>
-          </div>
 
-          <div className="mt-8 pt-6 border-t border-gray-800">
-            <h3 className="text-lg font-bold text-white mb-6 flex items-center">
-              <KeyRound className="w-5 h-5 mr-2 text-blue-500" /> Security
-            </h3>
-            <button className="bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 px-5 py-2.5 rounded-xl font-medium transition-colors text-sm w-full sm:w-auto">
-              Change Password
-            </button>
+            <div className="flex items-center bg-gray-800 rounded-xl p-4">
+              <Phone className="text-yellow-400 mr-4" />
+
+              <div>
+                <p className="text-gray-400 text-sm">
+                  Phone Number
+                </p>
+
+                <p className="text-white font-medium">
+                  {user.phone || "Not Provided"}
+                </p>
+              </div>
+            </div>
+
           </div>
         </motion.div>
+
+        {/* Security */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="bg-gray-900 border border-gray-800 rounded-3xl p-8"
+        >
+          <h2 className="text-white text-xl font-semibold mb-8">
+            Security Settings
+          </h2>
+
+          <div className="rounded-2xl border border-gray-800 bg-gray-800 p-6">
+
+            <div className="flex items-center justify-between flex-wrap gap-5">
+
+              <div className="flex items-center">
+
+                <div className="bg-blue-600 p-4 rounded-xl mr-5">
+                  <KeyRound className="text-white" />
+                </div>
+
+                <div>
+                  <h3 className="text-white font-semibold">
+                    Password
+                  </h3>
+
+                  <p className="text-gray-400 text-sm">
+                    Keep your account secure by updating your password regularly.
+                  </p>
+                </div>
+
+              </div>
+
+              <button
+                className="
+                px-6
+                py-3
+                rounded-xl
+                bg-gradient-to-r
+                from-blue-600
+                to-indigo-600
+                hover:from-blue-500
+                hover:to-indigo-500
+                text-white
+                font-semibold
+                transition
+                "
+              >
+                Change Password
+              </button>
+
+            </div>
+
+          </div>
+
+          <div className="mt-8 rounded-2xl bg-blue-500/10 border border-blue-500/20 p-5">
+
+            <h3 className="text-blue-400 font-semibold mb-2">
+              Security Tips
+            </h3>
+
+            <ul className="space-y-2 text-gray-300 text-sm list-disc ml-5">
+              <li>Use a strong password.</li>
+              <li>Never share your credentials.</li>
+              <li>Update your password every few months.</li>
+              <li>Logout from shared devices.</li>
+            </ul>
+
+          </div>
+
+        </motion.div>
+
       </div>
     </div>
   );
