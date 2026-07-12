@@ -11,7 +11,6 @@ import {
   Activity,
 } from "lucide-react";
 import { motion } from "framer-motion";
-
 const Profile = () => {
   const { user } = useAuth();
 
